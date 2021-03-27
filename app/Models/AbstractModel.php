@@ -1,13 +1,10 @@
 <?php
 
-
 namespace App\Models;
-
 
 use App\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Laravelista\Comments\Comment;
 
 /**
  * Class AbstractModel
@@ -15,9 +12,6 @@ use Laravelista\Comments\Comment;
  */
 abstract class AbstractModel extends Model
 {
-    /**
-     *
-     */
     public const STATUSES = [
         'new' => 'Новый',
         'active' => 'Показывать',
@@ -26,21 +20,11 @@ abstract class AbstractModel extends Model
     ];
 
     /**
-     * @var string[]
-     */
-    protected static $morphMap = [
-        'comments' => Comment::class,
-        'events' => Event::class,
-        'places' => Place::class,
-        'trips' => Trip::class
-    ];
-
-    /**
      * @param Builder $query
      * @param AbstractFilter $filter
      * @return Builder
      */
-    public function scopeFilter(Builder $query, AbstractFilter $filter)
+    public function scopeFilter(Builder $query, AbstractFilter $filter): Builder
     {
         return $filter->apply($query);
     }

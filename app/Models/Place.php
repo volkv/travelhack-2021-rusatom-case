@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Models;
-
 
 use App\Models\Traits\Favoritable;
 use App\Models\Traits\Rateable;
@@ -24,14 +22,9 @@ class Place extends AbstractModel
     use SoftDeletes;
 
     /**
-     * @var string
-     */
-    protected $table = 'places';
-
-    /**
      * @var string[]
      */
-    protected $fillable = ['*'];
+    protected $guarded = [];
 
     /**
      * @var string[]

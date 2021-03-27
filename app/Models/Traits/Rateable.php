@@ -18,7 +18,6 @@ trait Rateable
      */
     public function rating()
     {
-        Relation::morphMap(Rating::getMorphMap());
         return $this->morphMany(Rating::class, 'rateable');
     }
 

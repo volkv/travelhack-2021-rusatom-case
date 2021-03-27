@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Models;
-
 
 use App\Models\Lists\AgeRestriction;
 use App\Models\Lists\Season;
@@ -22,14 +20,9 @@ class Event extends AbstractModel
     use Commentable;
 
     /**
-     * @var string
-     */
-    protected $table = 'events';
-
-    /**
      * @var string[]
      */
-    protected $fillable = ['*'];
+    protected $guarded = [];
 
     /**
      * @return HasOne

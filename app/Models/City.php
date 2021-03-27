@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -15,14 +14,9 @@ class City extends AbstractModel
     use SoftDeletes;
 
     /**
-     * @var string
-     */
-    protected $table = 'cities';
-
-    /**
      * @var string[]
      */
-    protected $fillable = ['*'];
+    protected $guarded = [];
 
     /**
      * @return array
@@ -36,17 +30,17 @@ class City extends AbstractModel
     }
 
     /**
-     * @return mixed
+     * @return HasMany
      */
-    public function places()
+    public function places(): HasMany
     {
         return $this->hasMany(Place::class);
     }
 
     /**
-     * @return mixed
+     * @return HasMany
      */
-    public function trips()
+    public function trips(): HasMany
     {
         return $this->hasMany(Trip::class);
     }

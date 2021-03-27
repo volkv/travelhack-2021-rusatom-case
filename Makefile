@@ -1,5 +1,5 @@
 exec:
-	docker-compose exec php-fpm $$cmd
+	docker-compose exec php $$cmd
 
 docker-up:
 	docker-compose up -d

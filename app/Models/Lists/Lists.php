@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Models\Lists;
-
 
 use App\Models\AbstractModel;
 
@@ -30,7 +28,7 @@ class Lists extends AbstractModel
     /**
      * Set the prefix associated with the model.
      *
-     * @param  string $prefix
+     * @param string $prefix
      * @return $this
      */
     public function setPrefix($prefix): Lists

@@ -18,7 +18,6 @@ trait Favoritable
      */
     public function favorites()
     {
-        Relation::morphMap(Favorite::getMorphMap());
         return $this->morphMany(Favorite::class, 'favoritable');
     }
 

@@ -1,11 +1,8 @@
 <?php
 
-
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * Class Favorite
@@ -27,23 +24,14 @@ class Favorite extends AbstractModel
      */
     public function favoritable()
     {
-        Relation::morphMap(self::$morphMap);
         return $this->morphTo();
     }
 
     /**
-     * The user who favorited something.
+     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    /**
-     * @return array $morphMap
-     */
-    public static function getMorphMap(): array
-    {
-        return self::$morphMap;
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Models;
-
 
 use App\Models\Lists\AgeRestriction;
 use App\Models\Lists\Level;
@@ -26,14 +24,9 @@ class Trip extends AbstractModel
     use Rateable;
 
     /**
-     * @var string
-     */
-    protected $table = 'trips';
-
-    /**
      * @var string[]
      */
-    protected $fillable = ['*'];
+    protected $guarded = [];
 
     /**
      * @return BelongsToMany

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Models\Lists;
-
 
 /**
  * Class Level

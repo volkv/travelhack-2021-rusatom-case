@@ -75,20 +75,51 @@
                 <activity-card :item="item" />
             </v-col>
         </v-row>
+
+        <v-btn
+            class="mx-2"
+            fab
+            dark
+            color="tranparent"
+            @click="dialog = true"
+            fixed
+            bottom
+            right
+        >
+            <v-icon dark>
+                mdi-plus
+            </v-icon>
+        </v-btn>
+
+
+        <v-dialog
+            v-model="dialog"
+            persistent
+            max-width="600px"
+        >
+            <form-dialog
+                @close="dialog = false" />
+
+        </v-dialog>
+
     </v-container>
 </template>
 <script>
 
 import ActivityCard from "../components/base/ActivityCard";
+import FormDialog from "../components/base/FormDialog"
 import loadDataMixin from "../mixins/loadDataMixin";
+
 export default {
     data() {
         return {
-            resource: 'places'
+            resource: 'places',
+            dialog: false,
         }
     },
     components: {
-        ActivityCard
+        ActivityCard,
+        FormDialog
     },
     mixins: [loadDataMixin],
     created() {

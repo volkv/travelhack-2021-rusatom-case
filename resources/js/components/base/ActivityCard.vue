@@ -1,7 +1,9 @@
 <template>
     <v-card
+
         :loading="loading"
         class="mx-auto my-2"
+        style="position: relative;"
     >
         <template slot="progress">
             <v-progress-linear
@@ -10,6 +12,22 @@
                 indeterminate
             ></v-progress-linear>
         </template>
+
+        <div class="ml-auto" style="position: absolute; z-index: 5; top:8px; right: 8px;" v-if="item.relevance">
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                dense
+                color="tranparent"
+                @click="dialog=true"
+            >
+                <v-icon dark>
+                    mdi-pencil
+                </v-icon>
+            </v-btn>
+        </div>
 
         <v-img
             height="200"
@@ -55,15 +73,31 @@
             </v-chip-group>
 
         </v-card-text>
+
+        <v-dialog
+            v-model="dialog"
+            persistent
+            max-width="600px"
+        >
+            <form-dialog
+                :item="item"
+                @close="dialog = false" />
+        </v-dialog>
     </v-card>
 </template>
 
 <script>
 
+import FormDialog from './FormDialog'
+
 export default {
+    components: {
+        FormDialog
+    },
     data() {
         return {
-            loading: true
+            loading: true,
+            dialog: false,
         }
     },
 
@@ -80,7 +114,7 @@ export default {
                 return '~' + Math.round(dist/100)*100
             }
             return Math.round(dist)
-        }
+        },
     },
 
     created() {

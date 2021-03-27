@@ -35,7 +35,6 @@ class UpdateExistingTables extends Migration
             Schema::table($table, function (Blueprint $table) {
                 $table->unsignedInteger('google_trends')->nullable();
                 $table->unsignedInteger('relevance')->nullable();
-
             });
         }
     }

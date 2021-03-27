@@ -2,6 +2,8 @@
 
 namespace App\Services\ContentRelevantService;
 
+use App\Models\Event;
+use App\Models\Place;
 use GoogleSearch;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
@@ -20,6 +22,11 @@ class ContentRelevantService
      * @var string|mixed
      */
     private string $token;
+
+    public const RELEVANT_MODELS = [
+        Event::class,
+        Place::class,
+    ];
 
     /**
      * ContentRelevantService constructor.
@@ -47,6 +54,31 @@ class ContentRelevantService
             fn() => $json_response
         );
         return $json_response->search_information->total_results;
+    }
+
+    public function updateGoogleTrends()
+    {
+        foreach (self::RELEVANT_MODELS as $model_class) {
+            $model_class::all()->each(function ($item) {
+                $item->google_trends = $this->getTotalResults($item->title);
+                $item->save();
+            });
+        }
+    }
+
+    public function updateRelevance()
+    {
+        foreach (self::RELEVANT_MODELS as $model_class) {
+            $model_instances = $model_class::whereNotNull('google_trends')->get();
+            $model_searches = $model_instances->pluck('google_trends');
+            $max_value = $model_searches->max();
+
+            $model_instances->each(function ($item) use ($max_value) {
+                $divider = $max_value / 100;
+                $item->relevance = ceil($item->google_trends / $divider);
+                $item->save();
+            });
+        }
     }
 
     /**

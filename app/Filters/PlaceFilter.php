@@ -40,6 +40,7 @@ class PlaceFilter extends AbstractFilter
             'rated' => 'nullable',
             'open_now' => 'nullable',
             'has_events' => 'nullable',
+            'userLocationDistance' => 'nullable|int',
             'sort' => 'nullable|string|in:relevance,created_at,avg,distance',
         ]);
 
@@ -66,20 +67,28 @@ class PlaceFilter extends AbstractFilter
         }
 
         if ($value == 'distance' && \request()->userLocation) {
-            $coords = explode(',',\request()->userLocation);
-$lat = $coords[0];
-$long = $coords[1];
-            if(count($coords) == 2){
-                return $this->query->select(['*', DB::raw("(3959 *
+            $coords = explode(',', \request()->userLocation);
+            $lat = $coords[0];
+            $long = $coords[1];
+            if (count($coords) == 2) {
+
+
+                $calcDistance = "6371 *
    acos(cos(radians($lat)) *
    cos(radians(latitude)) *
-   cos(radians(longitude) -
-   radians($long)) +
+   cos(radians(longitude) -   radians($long)) +
    sin(radians($lat)) *
-   sin(radians(latitude )))
-) AS distance ")])->orderBy('distance');
-            }
+   sin(radians(latitude )))";
 
+                $this->query->select([
+                    '*', DB::raw("($calcDistance) AS distance")]);
+
+                if ($distance = \request()->userLocationDistance) {
+                    $this->query->where(DB::raw($calcDistance),  '<', $distance);
+                }
+
+                return $this->query->orderBy('distance');
+            }
         }
 
         return $this->query;

@@ -1,13 +1,19 @@
 <?php
 
-
 namespace App\Filters;
 
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
+/**
+ * Class EventFilter
+ * @package App\Filters
+ */
 class EventFilter extends AbstractFilter
 {
+    /**
+     * @var array|string[]
+     */
     protected array $filtered = [
         'started_at',
         'stopped_at',
@@ -22,6 +28,10 @@ class EventFilter extends AbstractFilter
         'season_id',
     ];
 
+    /**
+     * EventFilter constructor.
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         $request->validate([
@@ -41,7 +51,11 @@ class EventFilter extends AbstractFilter
         parent::__construct($request);
     }
 
-    protected function startedAt($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function startedAt($value): Builder
     {
         return $this->query
             ->where(function ($q) use ($value) {
@@ -50,7 +64,11 @@ class EventFilter extends AbstractFilter
             });
     }
 
-    protected function stoppedAt($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function stoppedAt($value): Builder
     {
         return $this->query
             ->where(function ($q) use ($value) {
@@ -62,47 +80,81 @@ class EventFilter extends AbstractFilter
             });
     }
 
-    protected function stoppedBefore($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function stoppedBefore($value): Builder
     {
         return $this->query->where('stopped_at', '<=', $value);
     }
 
-    protected function cityId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function cityId($value): Builder
     {
         return $this->query->where('city_id', $value);
     }
 
-    protected function categoryId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function categoryId($value): Builder
     {
         return $this->query->whereIn('badge_id', explode(',', $value));
     }
 
-    protected function favorited()
+    /**
+     * @return Builder
+     */
+    protected function favorited(): Builder
     {
         return $this->query->favorited();
     }
 
-    protected function tourismTypeId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function tourismTypeId($value): Builder
     {
         return $this->query->where('tourism_type_id', $value);
     }
 
-    protected function placeId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function placeId($value): Builder
     {
         return $this->query->where('place_id', $value);
     }
 
-    protected function accessibleEnvironmentId()
+    /**
+     * @return Builder
+     */
+    protected function accessibleEnvironmentId(): Builder
     {
         return $this->query->where('accessible_environment', true);
     }
 
-    protected function ageRestrictionId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function ageRestrictionId($value): Builder
     {
         return $this->query->where('age_restriction_id', $value);
     }
 
-    protected function seasonId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function seasonId($value): Builder
     {
         return $this->query->where('season_id', $value);
     }

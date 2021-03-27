@@ -1,16 +1,21 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
-
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FavoriteResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Class FavoriteController
+ * @package App\Http\Controllers\Api
+ */
 class FavoriteController extends Controller
 {
+    /**
+     * FavoriteController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -20,7 +25,7 @@ class FavoriteController extends Controller
      * @param  Model $model
      * @return JsonResponse
      */
-    public function toggle(Model $model)
+    public function toggle(Model $model): JsonResponse
     {
         $model->toggleFavorite();
 

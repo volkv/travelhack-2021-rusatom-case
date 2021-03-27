@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
-
 
 use App\Filters\EventFilter;
 use App\Http\Controllers\Controller;
@@ -10,6 +8,10 @@ use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Class EventController
+ * @package App\Http\Controllers\Api
+ */
 class EventController extends Controller
 {
     /**
@@ -18,7 +20,7 @@ class EventController extends Controller
      * @param EventFilter $filter
      * @return AnonymousResourceCollection
      */
-    public function index(EventFilter $filter)
+    public function index(EventFilter $filter): AnonymousResourceCollection
     {
         return EventResource::collection(
             Event::filter($filter)->active()->paginate()

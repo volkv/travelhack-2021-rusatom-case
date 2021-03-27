@@ -5,6 +5,10 @@ namespace App\Models\Traits;
 use App\Models\Rating;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+/**
+ * Trait Rateable
+ * @package App\Models\Traits
+ */
 trait Rateable
 {
     /**
@@ -14,7 +18,6 @@ trait Rateable
      */
     public function rating()
     {
-        Relation::morphMap(Rating::getMorphMap());
         return $this->morphMany(Rating::class, 'rateable');
     }
 

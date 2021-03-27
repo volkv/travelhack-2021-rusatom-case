@@ -1,14 +1,18 @@
 <?php
 
-
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
+/**
+ * Class Rating
+ * @package App\Models
+ */
 class Rating extends AbstractModel
 {
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'rateable_id',
@@ -21,7 +25,6 @@ class Rating extends AbstractModel
      */
     public function rateable()
     {
-        Relation::morphMap(self::$morphMap);
         return $this->morphTo();
     }
 
@@ -31,13 +34,5 @@ class Rating extends AbstractModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    /**
-     * @return array $morphMap
-     */
-    public static function getMorphMap(): array
-    {
-        return self::$morphMap;
     }
 }

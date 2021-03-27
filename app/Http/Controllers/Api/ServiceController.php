@@ -1,14 +1,19 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 
+/**
+ * Class ServiceController
+ * @package App\Http\Controllers\Api
+ */
 class ServiceController extends Controller
 {
-    public function status()
+    /**
+     * @return array
+     */
+    public function status(): array
     {
         return [
             'date' => now()->toString(),

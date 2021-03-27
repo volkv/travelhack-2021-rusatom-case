@@ -1,14 +1,20 @@
 <?php
 
-
 namespace App\Filters;
 
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class PlaceFilter
+ * @package App\Filters
+ */
 class PlaceFilter extends AbstractFilter
 {
+    /**
+     * @var array|string[]
+     */
     protected array $filtered = [
         'category_id',
         'popular',
@@ -19,6 +25,10 @@ class PlaceFilter extends AbstractFilter
         'has_events',
     ];
 
+    /**
+     * PlaceFilter constructor.
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         $request->validate([
@@ -34,12 +44,19 @@ class PlaceFilter extends AbstractFilter
         parent::__construct($request);
     }
 
-    protected function categoryId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function categoryId($value): Builder
     {
         return $this->query->where('category_id', $value);
     }
 
-    protected function popular()
+    /**
+     * @return Builder
+     */
+    protected function popular(): Builder
     {
         return $this->query
             ->select('places.*', DB::raw('round(avg(value), 3) as ratings_average'))
@@ -49,12 +66,20 @@ class PlaceFilter extends AbstractFilter
             ->orderByDesc('places.id');
     }
 
-    protected function cityId($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function cityId($value): Builder
     {
         return $this->query->where('city_id', $value);
     }
 
-    protected function openNow($value)
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function openNow($value): Builder
     {
         $dayNum = date('N');
 
@@ -64,17 +89,26 @@ class PlaceFilter extends AbstractFilter
             ->where('work_hours->' . 'day_' . $dayNum . '_close', '>', date('H:i:s'));
     }
 
-    protected function favorited()
+    /**
+     * @return Builder
+     */
+    protected function favorited(): Builder
     {
         return $this->query->favorited();
     }
 
-    protected function rated()
+    /**
+     * @return Builder
+     */
+    protected function rated(): Builder
     {
         return $this->query->rated();
     }
 
-    protected function hasEvents()
+    /**
+     * @return Builder
+     */
+    protected function hasEvents(): Builder
     {
         $now = date('Y-m-d H:i:s');
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
-
 
 use App\Filters\TripFilter;
 use App\Http\Controllers\Controller;
@@ -10,6 +8,10 @@ use App\Http\Resources\TripResource;
 use App\Models\Trip;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Class TripController
+ * @package App\Http\Controllers\Api
+ */
 class TripController extends Controller
 {
     /**
@@ -18,7 +20,7 @@ class TripController extends Controller
      * @param TripFilter $filter
      * @return AnonymousResourceCollection
      */
-    public function index(TripFilter $filter)
+    public function index(TripFilter $filter): AnonymousResourceCollection
     {
         return TripResource::collection(
             Trip::filter($filter)->active()->paginate()

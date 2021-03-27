@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Interfaces\hasGoogleTrends;
 use App\Models\Lists\AgeRestriction;
 use App\Models\Lists\Season;
 use App\Models\Traits\Favoritable;
@@ -13,7 +14,7 @@ use Laravelista\Comments\Commentable;
  * Class Event
  * @package App\Models
  */
-class Event extends AbstractModel
+class Event extends AbstractModel implements hasGoogleTrends
 {
     use Favoritable;
     use SoftDeletes;
@@ -46,5 +47,13 @@ class Event extends AbstractModel
     public function season(): HasOne
     {
         return $this->hasOne(Season::class, 'id', 'season_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleTrendsQueryAttribute(): string
+    {
+        return $this->title . ' ' . City::find($this->city_id)->title;
     }
 }

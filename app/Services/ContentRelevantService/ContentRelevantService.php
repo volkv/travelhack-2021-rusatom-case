@@ -48,7 +48,7 @@ class ContentRelevantService
         if ($cache = Cache::get($hash_key)) {
             return $cache;
         }
-        $json_response = $this->callApi($query);
+        $json_response = $this->callGoogleSearchApi($query);
         Cache::rememberForever(
             $hash_key,
             fn() => $json_response
@@ -60,7 +60,7 @@ class ContentRelevantService
     {
         foreach (self::RELEVANT_MODELS as $model_class) {
             $model_class::all()->each(function ($item) {
-                $item->google_trends = $this->getTotalResults($item->title);
+                $item->google_trends = $this->getTotalResults($item->google_trends_query);
                 $item->save();
             });
         }
@@ -85,11 +85,11 @@ class ContentRelevantService
      * @param string $query
      * @return false|mixed
      */
-    public function callApi(string $query)
+    public function callGoogleSearchApi(string $query)
     {
         $client = new GoogleSearch($this->token);
         $query = [
-            "q" => $query . " событие мурманск",
+            "q" => $query,
             "location" => "Russia"
         ];
         return $client->get_json($query);

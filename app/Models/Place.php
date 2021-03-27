@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Interfaces\hasGoogleTrends;
 use App\Models\Traits\Favoritable;
 use App\Models\Traits\Rateable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +15,7 @@ use Laravelista\Comments\Commentable;
  * Class Place
  * @package App\Models
  */
-class Place extends AbstractModel
+class Place extends AbstractModel implements hasGoogleTrends
 {
     use Commentable;
     use Favoritable;
@@ -84,5 +85,13 @@ class Place extends AbstractModel
     public function tourism_type(): HasOne
     {
         return $this->hasOne(TourismType::class, 'id', 'tourism_type_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleTrendsQueryAttribute(): string
+    {
+        return $this->title . ' ' . City::find($this->city_id)->title;
     }
 }

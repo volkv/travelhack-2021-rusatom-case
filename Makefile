@@ -54,6 +54,9 @@ cache:
 migrate:
 	make exec cmd="php artisan migrate"
 
+migrate-rollback:
+	make exec cmd="php artisan migrate:rollback"
+
 migrate-fresh:
 	make exec cmd="php artisan migrate:fresh"
 

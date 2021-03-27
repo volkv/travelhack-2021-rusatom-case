@@ -2,9 +2,9 @@ export default {
 
     data() {
         return {
-            filter: {},
             options: {},
-            distance: 10,
+            localRadius: 10,
+            disnanceSwitch: false,
             sortOptions: [
                 {
                     text: 'По релевантонсти',
@@ -17,52 +17,85 @@ export default {
                 {
                     text: 'По новизне',
                     value: 'created_at'
+                },
+                {
+                    text: 'По рейтингу',
+                    value: 'avg'
                 }
-            ]
-
+            ],
+            items: [],
+            userLocation: null,
         }
     },
 
     methods: {
         async loadResource() {
-            if (this.options.sort && this.options.sort == 'distance') {
-                if(!this.options.distance) {
-                    this.options.distance = this.distance
-                }
-                await this.getLocation()
-            } else (delete this.options['distance'])
-            await this.$store.dispatch(this.resource + '/loadWhere', this.payload)
+
+            await this.getParams().then((res) => {
+                console.log('Загрузка ресурса')
+                console.log(res)
+
+                this.$axios.get(this.resource, {
+                    params: res
+                }).then((res) => {
+                    this.items = res.data.data
+                })
+            })
+
+
         },
 
         async getLocation() {
-            if (navigator.geolocation) {
-                return new Promise(resolve => {
+            return new Promise(resolve => {
+                if(this.userLocation){
+                    console.log('already set')
+                    resolve(this.options.userLocation = this.userLocation)
+                }
+                if (navigator.geolocation) {
+                    // let value = '55.71567700,37.55216600'
+                    // this.userLocation = value
+                    // resolve(value)
                     navigator.geolocation.getCurrentPosition(async (res) => {
-                        this.options.userLocation = res.coords.latitude + ',' + res.coords.longitude
-                        resolve()
+                        let value = res.coords.latitude + ',' + res.coords.longitude
+                        this.userLocation = value
+                        resolve(value)
                     })
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            })
+
+        },
+
+        async getParams() {
+            if(this.options.sort && this.options.sort == 'distance') {
+                await this.getLocation().then(res => {
+                    this.options.userLocation = res
+                })
+            }
+
+            console.log(this.disnanceSwitch)
+            if (this.disnanceSwitch) {
+                this.options.locationRadius = this.localRadius
+                await this.getLocation().then(res => {
+                    this.options.userLocation = res
                 })
             } else {
-                alert("Geolocation is not supported by this browser.");
+                console.log('Switch disabled')
+                delete this.options['locationRadius']
             }
-        },
+
+
+            return this.options
+        }
+
     },
 
     watch: {
-        distance() {
-            this.options.distance = this.distance
+        localRadius() {
+            this.options.locationRadius = this.localRadius
         }
     },
 
-    computed: {
-        items() {
-            return this.$store.getters[ this.resource + '/all'];
-        },
-        payload() {
-            return {
-                filter: this.filter,
-                options: this.options
-            }
-        }
-    },
+
 }

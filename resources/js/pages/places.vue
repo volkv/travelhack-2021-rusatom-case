@@ -12,13 +12,14 @@
         <v-row>
             <v-col
                 class="mt-2 d-flex"
-                cols="12" md="6" lg="4"
+                cols="12" md="6"
             >
                 <v-text-field
                     label="Поиск"
                     placeholder="Поиск"
                     v-model="options.search"
                     @keyup="loadResource"
+                    @click:clear="loadResource"
                     outlined
                     dense
                     clearable
@@ -26,7 +27,7 @@
             </v-col>
             <v-col
                 class="mt-2 d-flex flex-column"
-                cols="12" md="6" lg="4"
+                cols="12" md="6"
             >
                 <v-select
                     :items="sortOptions"
@@ -38,22 +39,28 @@
                     outlined
                     dense
                 ></v-select>
+
+            </v-col>
+            <v-col
+                class="mt-0 d-flex flex-column"
+                cols="12" md="6" lg="4"
+            >
+                <v-switch
+                    v-model="disnanceSwitch"
+                    label="В радиусе"
+                    @change="loadResource"
+                ></v-switch>
                 <v-slider
                     @change="loadResource"
                     class="mt-3"
-                    v-if="options.sort == 'distance'"
-                    v-model="distance"
+                    :disabled="!disnanceSwitch"
+
+                    v-model="localRadius"
                     label="Растояние"
                     :thumb-color="'red'"
                     thumb-label="always"
                     max="25"
                 ></v-slider>
-            </v-col>
-            <v-col
-                class="mt-2 d-flex flex-column"
-                cols="12" md="6" lg="4"
-            >
-
             </v-col>
         </v-row>
 
@@ -63,6 +70,7 @@
                 :key="item.id"
                 cols="6"
                 lg="3"
+                v-if="item"
             >
                 <activity-card :item="item" />
             </v-col>

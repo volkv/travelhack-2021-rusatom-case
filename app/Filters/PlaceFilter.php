@@ -5,6 +5,7 @@ namespace App\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class PlaceFilter
@@ -25,6 +26,7 @@ class PlaceFilter extends AbstractFilter
         'has_events',
         'sort',
         'locationRadius',
+        'search',
     ];
 
     /**
@@ -119,6 +121,18 @@ class PlaceFilter extends AbstractFilter
                     '*', DB::raw("($sqlDistance) AS distance")
                 ])->where(DB::raw($sqlDistance), '<', $value);
             }
+        }
+        return $this->query;
+    }
+
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function search($value): Builder
+    {
+        if(\request()->search){
+            return $this->query->where('title', 'LIKE', '%'.$value.'%');
         }
         return $this->query;
     }

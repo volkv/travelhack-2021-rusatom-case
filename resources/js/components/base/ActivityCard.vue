@@ -28,7 +28,7 @@
                     dense
                     half-increments
                     readonly
-                    size="14"
+                    size="12"
                 ></v-rating>
 
                 <div class="grey--text ml-4">
@@ -36,7 +36,18 @@
                 </div>
             </v-row>
 
-            <div class="my-0 text-h6 pb-0">{{ item.title }}</div>
+            <v-row
+                justify="space-between"
+                class="mx-0 my-0"
+            >
+                <div class="col-8">
+                    <div class="text-h6">{{ item.title }}</div>
+                </div>
+                <div class="col-3">
+                    <div class="text-truncate text-small mt-1 text-right red--text" v-if="item.distance">{{ prepareDistance(item.distance) }} км</div>
+                </div>
+            </v-row>
+
 
 
             <v-chip-group v-if="item.label">
@@ -61,6 +72,15 @@ export default {
             type: Object,
             required: true,
         },
+    },
+
+    methods: {
+        prepareDistance(dist) {
+            if (dist > 100) {
+                return '~' + Math.round(dist/100)*100
+            }
+            return Math.round(dist)
+        }
     },
 
     created() {

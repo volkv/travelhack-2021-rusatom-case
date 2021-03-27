@@ -23,6 +23,11 @@ export default {
         return {
             menuItems: [
                 {
+                    name: 'Главная',
+                    icon: 'mdi-home',
+                    link: 'index',
+                },
+                {
                     name: 'События',
                     icon: 'mdi-calendar',
                     link: 'events',

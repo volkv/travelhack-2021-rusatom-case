@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let config = {
 
-    baseURL: '/api',
+    baseURL: '/api/',
     headers: {
         'Content-Type': 'application/vnd.api+json',
     },

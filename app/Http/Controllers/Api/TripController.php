@@ -10,6 +10,10 @@ use App\Http\Resources\TripResource;
 use App\Models\Trip;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Class TripController
+ * @package App\Http\Controllers\Api
+ */
 class TripController extends Controller
 {
     /**

@@ -7,8 +7,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+/**
+ * Class Favorite
+ * @package App\Models
+ */
 class Favorite extends AbstractModel
 {
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'favoritable_type',

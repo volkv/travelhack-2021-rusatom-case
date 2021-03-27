@@ -7,8 +7,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+/**
+ * Class Rating
+ * @package App\Models
+ */
 class Rating extends AbstractModel
 {
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'rateable_id',

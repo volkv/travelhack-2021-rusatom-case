@@ -10,6 +10,10 @@ use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Class EventController
+ * @package App\Http\Controllers\Api
+ */
 class EventController extends Controller
 {
     /**

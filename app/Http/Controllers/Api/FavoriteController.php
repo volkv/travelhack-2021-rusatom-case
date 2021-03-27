@@ -9,8 +9,15 @@ use App\Http\Resources\FavoriteResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Class FavoriteController
+ * @package App\Http\Controllers\Api
+ */
 class FavoriteController extends Controller
 {
+    /**
+     * FavoriteController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth:api');

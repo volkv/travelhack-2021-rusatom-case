@@ -10,6 +10,10 @@ use App\Http\Resources\PlaceResource;
 use App\Models\Place;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Class PlaceController
+ * @package App\Http\Controllers\Api
+ */
 class PlaceController extends Controller
 {
     /**

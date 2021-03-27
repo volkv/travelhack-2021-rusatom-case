@@ -6,8 +6,15 @@ namespace App\Models\Lists;
 
 use App\Models\AbstractModel;
 
+/**
+ * Class Lists
+ * @package App\Models\Lists
+ */
 class Lists extends AbstractModel
 {
+    /**
+     * @var string
+     */
     protected string $prefix = 'list_';
 
     /**

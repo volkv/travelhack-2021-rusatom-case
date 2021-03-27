@@ -11,8 +11,15 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Class CommentController
+ * @package App\Http\Controllers\Api
+ */
 class CommentController extends Controller
 {
+    /**
+     * CommentController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['index', 'show']]);
@@ -27,7 +34,7 @@ class CommentController extends Controller
     public function index(Model $model)
     {
         return CommentResource::collection(
-            $model->comments->where('approved', 1)
+            $model->comments()->where('approved', 1)->get()
         );
     }
 
@@ -56,7 +63,7 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function show($id)
@@ -67,8 +74,8 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return Response
      */
     public function update(Request $request, $id)
@@ -79,7 +86,7 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function destroy($id)

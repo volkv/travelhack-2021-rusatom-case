@@ -5,6 +5,10 @@ namespace App\Models\Traits;
 use App\Models\Favorite;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+/**
+ * Trait Favoritable
+ * @package App\Models\Traits
+ */
 trait Favoritable
 {
     /**

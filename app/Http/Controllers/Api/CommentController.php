@@ -1,14 +1,10 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
-
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 /**
@@ -31,7 +27,7 @@ class CommentController extends Controller
      * @param Model $model
      * @return AnonymousResourceCollection
      */
-    public function index(Model $model)
+    public function index(Model $model): AnonymousResourceCollection
     {
         return CommentResource::collection(
             $model->comments()->where('approved', 1)->get()
@@ -44,7 +40,7 @@ class CommentController extends Controller
      * @param Model $model
      * @return CommentResource
      */
-    public function store(Model $model)
+    public function store(Model $model): CommentResource
     {
         $commentClass = config('comments.model');
         $comment = new $commentClass;
@@ -58,39 +54,5 @@ class CommentController extends Controller
         $comment->save();
 
         return new CommentResource($comment);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

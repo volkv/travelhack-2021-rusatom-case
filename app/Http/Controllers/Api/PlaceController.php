@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
-
 
 use App\Filters\PlaceFilter;
 use App\Http\Controllers\Controller;
@@ -22,7 +20,7 @@ class PlaceController extends Controller
      * @param PlaceFilter $filter
      * @return AnonymousResourceCollection
      */
-    public function index(PlaceFilter $filter)
+    public function index(PlaceFilter $filter): AnonymousResourceCollection
     {
         return PlaceResource::collection(
             Place::filter($filter)->active()->paginate()

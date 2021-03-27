@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
-
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FavoriteResource;
@@ -27,7 +25,7 @@ class FavoriteController extends Controller
      * @param  Model $model
      * @return JsonResponse
      */
-    public function toggle(Model $model)
+    public function toggle(Model $model): JsonResponse
     {
         $model->toggleFavorite();
 

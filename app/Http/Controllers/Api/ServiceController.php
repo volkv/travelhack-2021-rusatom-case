@@ -1,10 +1,8 @@
 <?php
 
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 
 /**
  * Class ServiceController
@@ -15,7 +13,7 @@ class ServiceController extends Controller
     /**
      * @return array
      */
-    public function status()
+    public function status(): array
     {
         return [
             'date' => now()->toString(),

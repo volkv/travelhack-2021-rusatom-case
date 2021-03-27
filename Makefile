@@ -42,7 +42,7 @@ npm-watch:
 	make exec cmd="npm run watch"
 
 perm:
-	sudo chown -R www-data:www-data .
+	sudo chown -R 1000:1000 .
 	sudo chmod -R 775  .
 
 log-nginx:

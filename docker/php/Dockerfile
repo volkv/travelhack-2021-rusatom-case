@@ -54,12 +54,16 @@ RUN apk add --update nodejs npm
 
 RUN apk add --no-cache git
 
+RUN mkdir /.composer
 RUN mkdir /composer
 RUN mkdir /npm
-RUN chown www-data:www-data /npm
-RUN chown www-data:www-data /composer
+RUN chown 1000:1000 /npm
+RUN chown 1000:1000 /composer
+RUN chown 1000:1000 /.composer
 
 RUN npm set cache "/npm" -g
+
+USER 1000
 
 WORKDIR /var/www/app
 

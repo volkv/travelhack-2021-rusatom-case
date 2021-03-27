@@ -16,9 +16,8 @@ services:
     build:
       context: docker/php
       dockerfile: Dockerfile
-    user: "root:root"
     volumes:
-      - ./:/var/www/app
+      - .:/var/www/app:delegated
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - ./docker/php/without-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - ./docker/php/without-blackfire.ini:/usr/local/etc/php/conf.d/blackfire.ini
@@ -26,7 +25,6 @@ services:
     environment:
       - PHP_IDE_CONFIG=serverName=tourism-demo.loc
       - XDEBUG_CONFIG=remote_enable=true remote_host=172.17.0.1
-
     ports:
       - "8707:8707"
 

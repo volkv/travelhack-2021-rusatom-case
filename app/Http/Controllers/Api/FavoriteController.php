@@ -22,7 +22,7 @@ class FavoriteController extends Controller
     }
 
     /**
-     * @param  Model $model
+     * @param Model $model
      * @return JsonResponse
      */
     public function toggle(Model $model): JsonResponse

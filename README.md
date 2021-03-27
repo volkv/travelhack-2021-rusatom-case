@@ -7,7 +7,8 @@
 
 # Готовое решение
 
-* wip
+* Получение данных из Google Search API и ранжирование туристического контента по реелвантности
+* Функционал получение геоданнх пользователя и поиска ближайших к нему объектов
 
 ## Функционал:
 
@@ -16,38 +17,3 @@
 ### Планы развития:
 
 * wip
-
-## Stack
-
-* Laravel `8.12`
-* PostgreSQL `13`
-* Nginx `1.19.3`
-* Redis `6.0.9`
-* ElasticSearch `7.9.3`
-* React `16.14`
-* VKUI / VKBridge
-
-## Технологии
-
-* Docker / Compose
-* Очереди Redis
-* Кэш Redis
-* Планировщик Laravel
-* Events / Notification Channels
-
-## Локальный запуск (Linux / macOS):
-
-### Зависимости
-
-* git (`apt install git`)
-* make (`apt install make`)
-* docker / docker-compose ([установка](https://docs.docker.com/compose/install/))
-
-### Сборка
-
-* `cp .env.exmaple .env`
-* `make docker-up`
-
-Успех. Сервер запущен и доступен по адресу: https://travelhack.test:8080
-
-Ex: https://vk-cyber.volkv.com/api/v1/tournament/5168

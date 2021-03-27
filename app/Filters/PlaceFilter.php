@@ -24,6 +24,7 @@ class PlaceFilter extends AbstractFilter
         'open_now',
         'has_events',
         'sort',
+        'locationRadius',
     ];
 
     /**
@@ -33,6 +34,7 @@ class PlaceFilter extends AbstractFilter
     public function __construct(Request $request)
     {
         $request->validate([
+            'locationRadius' => 'nullable|int',
             'category_id' => 'integer',
             'popular' => 'nullable',
             'city_id' => 'integer',
@@ -40,13 +42,31 @@ class PlaceFilter extends AbstractFilter
             'rated' => 'nullable',
             'open_now' => 'nullable',
             'has_events' => 'nullable',
-            'userLocationDistance' => 'nullable|int',
             'sort' => 'nullable|string|in:relevance,created_at,avg,distance',
         ]);
 
         parent::__construct($request);
     }
 
+
+    static function getSQLDistance($locationString): ?string
+    {
+        $coords = explode(',', $locationString);
+
+        if (count($coords) != 2) {
+            return null;
+        }
+
+        $lat = $coords[0];
+        $long = $coords[1];
+
+        return "6371 *
+   acos(cos(radians($lat)) *
+   cos(radians(latitude)) *
+   cos(radians(longitude) -   radians($long)) +
+   sin(radians($lat)) *
+   sin(radians(latitude )))";
+    }
 
     protected function sort($value): Builder
     {
@@ -67,30 +87,31 @@ class PlaceFilter extends AbstractFilter
         }
 
         if ($value == 'distance' && \request()->userLocation) {
-            $coords = explode(',', \request()->userLocation);
-            $lat = $coords[0];
-            $long = $coords[1];
-            if (count($coords) == 2) {
 
-
-                $calcDistance = "6371 *
-   acos(cos(radians($lat)) *
-   cos(radians(latitude)) *
-   cos(radians(longitude) -   radians($long)) +
-   sin(radians($lat)) *
-   sin(radians(latitude )))";
+            if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
 
                 $this->query->select([
-                    '*', DB::raw("($calcDistance) AS distance")]);
-
-                if ($distance = \request()->userLocationDistance) {
-                    $this->query->where(DB::raw($calcDistance),  '<', $distance);
-                }
+                    '*', DB::raw("($sqlDistance) AS distance")
+                ]);
 
                 return $this->query->orderBy('distance');
             }
         }
 
+        return $this->query;
+    }
+
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function locationRadius($value): Builder
+    {
+        if(\request()->userLocation){
+            if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
+             return $this->query->where(DB::raw($sqlDistance), '<', $value);
+            }
+        }
         return $this->query;
     }
 

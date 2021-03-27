@@ -24,7 +24,12 @@ class PlaceController extends Controller
     public function index(PlaceFilter $filter): AnonymousResourceCollection
     {
         return PlaceResource::collection(
-            Place::filter($filter)->active()->paginate()
+            Place::filter($filter)
+                ->active()
+                ->orderBy('priority')
+                ->orderByDesc('relevance')
+                ->orderByDesc('google_trends')
+                ->paginate()
         );
     }
 

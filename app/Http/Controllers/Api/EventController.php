@@ -23,7 +23,12 @@ class EventController extends Controller
     public function index(EventFilter $filter): AnonymousResourceCollection
     {
         return EventResource::collection(
-            Event::filter($filter)->active()->paginate()
+            Event::filter($filter)
+                ->active()
+                ->orderBy('priority')
+                ->orderByDesc('relevance')
+                ->orderByDesc('google_trends')
+                ->paginate()
         );
     }
 }

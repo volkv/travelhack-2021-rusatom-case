@@ -4,10 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateExistingTables extends Migration
+class UpdateRelevantAddPriority extends Migration
 {
-
-    static array $tables = ['events','places'];
+    static array $tables = ['events', 'places'];
 
     /**
      * Run the migrations.
@@ -16,10 +15,9 @@ class UpdateExistingTables extends Migration
      */
     public function up()
     {
-        foreach (self::$tables as $table){
+        foreach (self::$tables as $table) {
             Schema::table($table, function (Blueprint $table) {
-                $table->unsignedInteger('google_trends')->nullable();
-                $table->unsignedInteger('relevance')->nullable();
+                $table->unsignedInteger('priority')->nullable();
             });
         }
     }
@@ -31,9 +29,9 @@ class UpdateExistingTables extends Migration
      */
     public function down()
     {
-        foreach (self::$tables as $table){
+        foreach (self::$tables as $table) {
             Schema::table($table, function (Blueprint $table) {
-                $table->dropColumn(['google_trends', 'relevance']);
+                $table->dropColumn(['priority']);
             });
         }
     }

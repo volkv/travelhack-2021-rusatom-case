@@ -23,11 +23,12 @@ class PlaceFilter extends AbstractFilter
         'rated',
         'open_now',
         'has_events',
+        'sort',
     ];
 
     /**
      * PlaceFilter constructor.
-     * @param Request $request
+     * @param  Request  $request
      */
     public function __construct(Request $request)
     {
@@ -38,11 +39,52 @@ class PlaceFilter extends AbstractFilter
             'favorited' => 'nullable',
             'rated' => 'nullable',
             'open_now' => 'nullable',
-            'has_events' => 'nullable'
+            'has_events' => 'nullable',
+            'sort' => 'nullable|string|in:relevance,created_at,avg,distance',
         ]);
 
         parent::__construct($request);
     }
+
+
+    protected function sort($value): Builder
+    {
+        if ($value == 'avg') {
+            return $this->query->withCount([
+                'rating as average_rating' => function ($query) {
+                    $query->select(DB::raw('coalesce(avg(value),0)'));
+                }
+            ])->orderByDesc('average_rating');
+        }
+
+        if ($value == 'relevance') {
+            return $this->query->orderByDesc('relevance');
+        }
+
+        if ($value == 'created_at') {
+            return $this->query->orderByDesc('created_at');
+        }
+
+        if ($value == 'distance' && \request()->userLocation) {
+            $coords = explode(',',\request()->userLocation);
+$lat = $coords[0];
+$long = $coords[1];
+            if(count($coords) == 2){
+                return $this->query->select(['*', DB::raw("(3959 *
+   acos(cos(radians($lat)) *
+   cos(radians(latitude)) *
+   cos(radians(longitude) -
+   radians($long)) +
+   sin(radians($lat)) *
+   sin(radians(latitude )))
+) AS distance ")])->orderBy('distance');
+            }
+
+        }
+
+        return $this->query;
+    }
+
 
     /**
      * @param $value
@@ -83,10 +125,10 @@ class PlaceFilter extends AbstractFilter
     {
         $dayNum = date('N');
 
-        return $this->query->whereNotNull('work_hours->' . 'day_' . $dayNum . '_open')
-            ->whereNotNull('work_hours->' . 'day_' . $dayNum . '_close')
-            ->where('work_hours->' . 'day_' . $dayNum . '_open', '<', date('H:i:s'))
-            ->where('work_hours->' . 'day_' . $dayNum . '_close', '>', date('H:i:s'));
+        return $this->query->whereNotNull('work_hours->'.'day_'.$dayNum.'_open')
+            ->whereNotNull('work_hours->'.'day_'.$dayNum.'_close')
+            ->where('work_hours->'.'day_'.$dayNum.'_open', '<', date('H:i:s'))
+            ->where('work_hours->'.'day_'.$dayNum.'_close', '>', date('H:i:s'));
     }
 
     /**

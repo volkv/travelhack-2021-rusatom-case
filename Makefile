@@ -1,5 +1,5 @@
 exec:
-	docker-compose exec php-fpm $$cmd
+	docker-compose exec php $$cmd
 
 docker-up:
 	docker-compose up -d
@@ -33,7 +33,7 @@ composer-install:
 	make exec cmd="composer install"
 
 npm-install:
-	make exec cmd="npm install"
+	make exec cmd="npm install --unsafe-perm"
 
 npm-prod:
 	make exec cmd="npm run prod"

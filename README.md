@@ -46,7 +46,7 @@
 ### Сборка
 
 * `cp .env.exmaple .env`
-* `make install`
+* `make docker-up`
 
 Успех. Сервер запущен и доступен по адресу: https://travelhack.test:8080
 

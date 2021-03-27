@@ -16,9 +16,9 @@ services:
     build:
       context: docker/php
       dockerfile: Dockerfile
-    user: "1000:1000"
+    user: "root:root"
     volumes:
-      - .:/var/www/app:delegated
+      - ./:/var/www/app
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
       - ./docker/php/without-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - ./docker/php/without-blackfire.ini:/usr/local/etc/php/conf.d/blackfire.ini

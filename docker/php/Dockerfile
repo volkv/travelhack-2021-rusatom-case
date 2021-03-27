@@ -48,4 +48,18 @@ RUN docker-php-ext-install exif
 
 RUN curl -sS https://getcomposer.org/installer | php -- --version=2.0.6 --install-dir=/usr/local/bin --filename=composer
 
+RUN apk update && apk add bash
+
+RUN apk add --update nodejs npm
+
 RUN apk add --no-cache git
+
+RUN mkdir /composer
+RUN mkdir /npm
+RUN chown www-data:www-data /npm
+RUN chown www-data:www-data /composer
+
+RUN npm set cache "/npm" -g
+
+WORKDIR /var/www/app
+

@@ -10,7 +10,9 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
+        "browser-sync": "^2.26.14",
+        "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^7.0",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.19",
@@ -20,7 +22,11 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@reststate/vuex": "^0.2.5",
         "vue": "^2.6.12",
-        "vuetify": "^2.4.8"
-    }
+        "vue-router": "^3.5.1",
+        "vuetify": "^2.4.8",
+        "vuex": "^3.6.2"
+    },
+    "name": "travelhack-2021-rusatom-case"
 }

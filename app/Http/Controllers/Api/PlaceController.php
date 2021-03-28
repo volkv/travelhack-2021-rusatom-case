@@ -50,4 +50,18 @@ class PlaceController extends Controller
 
       return response()->json($created->toArray());
     }
+
+    public function update(Request $request) {
+        $request->validate([
+                'priority' => 'required|integer',
+                'id' => 'required',
+            ]);
+        $model = Place::find($request->id);
+        $model->fill($request->only([
+            'title',
+            'priority',
+        ]));
+        $model->save();
+        return response()->json(['status' => 'success', 'model' => $model]);
+    }
 }

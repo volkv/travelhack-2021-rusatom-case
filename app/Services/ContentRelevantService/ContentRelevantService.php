@@ -11,6 +11,7 @@ use App\Services\ContentRelevantService\RelevantHandlers\RatingHandler;
 use GoogleSearch;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ContentRelevantService
@@ -48,11 +49,20 @@ class ContentRelevantService
      */
     public function getTotalResults(string $query)
     {
+
+        $query = str_replace(['"',"'"],'',$query);
+
         $hash_key = md5($query);
         if ($cache = Cache::get($hash_key)) {
             return $cache;
         }
-        $json_response = $this->callGoogleSearchApi($query);
+        try {
+            $json_response = $this->callGoogleSearchApi($query);
+        }catch (\Exception $exception){
+            echo 'ERR';
+            return 0;
+        }
+
         Cache::rememberForever(
             $hash_key,
             fn() => $json_response->search_information->total_results
@@ -65,10 +75,16 @@ class ContentRelevantService
      */
     public function updateGoogleTrends()
     {
+
+        Event::where('id','>',40)->delete();
+        Place::where('id','>',400)->delete();
+
+
         foreach (self::RELEVANT_MODELS as $model_class) {
             $model_class::all()->each(function ($item) {
                 $item->google_trends = $this->getTotalResults($item->google_trends_query);
                 $item->save();
+                echo '|';
             });
         }
     }

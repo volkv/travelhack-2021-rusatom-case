@@ -31,7 +31,9 @@ class UpdateRelevance implements ShouldQueue
     public function handle()
     {
         $content_relevant_service = app(ContentRelevantService::class);
+
         $content_relevant_service->updateGoogleTrends();
+
         $content_relevant_service->updateRelevance();
     }
 }

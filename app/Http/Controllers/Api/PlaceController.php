@@ -29,7 +29,7 @@ class PlaceController extends Controller
                 ->orderBy('priority')
                 ->orderByDesc('relevance')
                 ->orderByDesc('google_trends')
-                ->paginate()
+                ->paginate(100)
         );
     }
 

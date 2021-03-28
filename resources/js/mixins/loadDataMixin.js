@@ -2,7 +2,9 @@ export default {
 
     data() {
         return {
-            options: {},
+            options: {
+                sort:'relevance'
+            },
             localRadius: 10,
             disnanceSwitch: false,
             sortOptions: [

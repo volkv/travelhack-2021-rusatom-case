@@ -12,13 +12,14 @@
         <v-row>
             <v-col
                 class="mt-2 d-flex"
-                cols="12" md="6" lg="4"
+                cols="12" md="6"
             >
                 <v-text-field
                     label="Поиск"
                     placeholder="Поиск"
                     v-model="options.search"
                     @keyup="loadResource"
+                    @click:clear="loadResource"
                     outlined
                     dense
                     clearable
@@ -26,7 +27,7 @@
             </v-col>
             <v-col
                 class="mt-2 d-flex flex-column"
-                cols="12" md="6" lg="4"
+                cols="12" md="6"
             >
                 <v-select
                     :items="sortOptions"
@@ -38,21 +39,6 @@
                     outlined
                     dense
                 ></v-select>
-                <v-slider
-                    @change="loadResource"
-                    class="mt-3"
-                    v-if="options.sort == 'distance'"
-                    v-model="distance"
-                    label="Растояние"
-                    :thumb-color="'red'"
-                    thumb-label="always"
-                    max="25"
-                ></v-slider>
-            </v-col>
-            <v-col
-                class="mt-2 d-flex flex-column"
-                cols="12" md="6" lg="4"
-            >
 
             </v-col>
         </v-row>
@@ -61,7 +47,8 @@
             <v-col
                 v-for="item in items"
                 :key="item.id"
-                cols="6"
+                cols="12"
+                md="6"
                 lg="3"
             >
                 <activity-card :item="item" />
@@ -76,7 +63,21 @@ import loadDataMixin from "../mixins/loadDataMixin";
 export default {
     data() {
         return {
-            resource: 'trips'
+            resource: 'trips',
+            sortOptions: [
+                {
+                    text: 'По релевантонсти',
+                    value: 'relevance'
+                },
+                {
+                    text: 'По новизне',
+                    value: 'created_at'
+                },
+                {
+                    text: 'По рейтингу',
+                    value: 'avg'
+                }
+            ],
         }
     },
     components: {

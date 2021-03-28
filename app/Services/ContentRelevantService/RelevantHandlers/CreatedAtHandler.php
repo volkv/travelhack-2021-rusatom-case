@@ -37,11 +37,9 @@ class CreatedAtHandler extends AbstractRelevantHandler implements Handler
             $diff_in_days = $this->created_at->diffInDays(Carbon::now());
             if ($diff_in_days < 7) {
                 $sum *= 1.75;
-            }
-            if ($diff_in_days < 30) {
+            } else if ($diff_in_days < 30) {
                 $sum *= 1.5;
-            }
-            if ($diff_in_days < 180) {
+            } else if ($diff_in_days < 180) {
                 $sum *= 1.25;
             }
         }

@@ -21,7 +21,8 @@
         <v-col
             v-for="item in items"
             :key="item.id"
-            cols="6"
+            cols="12"
+            md="6"
             lg="3"
         >
 <!--            Карточка активности-->

@@ -4,6 +4,14 @@
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title>Murmansk.travel</v-toolbar-title>
+
+            <a href="https://github.com/volkv/travelhack-2021-rusatom-case" style="text-decoration: none;" class="ml-auto">
+                <v-icon
+                large
+            >
+                mdi-git
+            </v-icon></a>
+
         </v-app-bar>
 
         <v-navigation-drawer

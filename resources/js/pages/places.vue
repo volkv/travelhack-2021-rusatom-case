@@ -72,7 +72,7 @@
                 lg="3"
                 v-if="item"
             >
-                <activity-card :item="item" />
+                <activity-card @updated="loadResource" :resource="'places'" :item="item" />
             </v-col>
         </v-row>
 
@@ -90,24 +90,11 @@
                 mdi-plus
             </v-icon>
         </v-btn>
-
-
-        <v-dialog
-            v-model="dialog"
-            persistent
-            max-width="600px"
-        >
-            <form-dialog
-                @close="dialog = false" />
-
-        </v-dialog>
-
     </v-container>
 </template>
 <script>
 
 import ActivityCard from "../components/base/ActivityCard";
-import FormDialog from "../components/base/FormDialog"
 import loadDataMixin from "../mixins/loadDataMixin";
 
 export default {
@@ -119,7 +106,6 @@ export default {
     },
     components: {
         ActivityCard,
-        FormDialog
     },
     mixins: [loadDataMixin],
     created() {

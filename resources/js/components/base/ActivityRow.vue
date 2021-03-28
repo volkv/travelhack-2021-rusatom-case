@@ -24,6 +24,7 @@
             cols="6"
             lg="3"
         >
+<!--            Карточка активности-->
             <activity-card :item="item" />
         </v-col>
     </v-row>
@@ -36,6 +37,7 @@ import ActivityCard from "./ActivityCard";
 
 
 export default {
+    // Миксин универсальной подгрузки ресурса
     mixins: [loadDataMixin],
 
     components: {

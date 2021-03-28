@@ -25,26 +25,27 @@ export default {
             ],
             items: [],
             userLocation: null,
+            loading: true,
         }
     },
 
     methods: {
+        //Загрузка ресурса после резолва параметров запроса
         async loadResource() {
-
+            this.loading = true
             await this.getParams().then((res) => {
                 console.log('Загрузка ресурса')
-                console.log(res)
-
                 this.$axios.get(this.resource, {
                     params: res
                 }).then((res) => {
                     this.items = res.data.data
+                    this.loading = false
                 })
             })
 
 
         },
-
+        // Ассинхронное получение локации
         async getLocation() {
             return new Promise(resolve => {
                 if(this.userLocation){
@@ -67,6 +68,7 @@ export default {
 
         },
 
+        //Асинхронное получение параметров загрузки
         async getParams() {
             if(this.options.sort && this.options.sort == 'distance') {
                 await this.getLocation().then(res => {
@@ -85,9 +87,15 @@ export default {
                 delete this.options['locationRadius']
             }
 
-
             return this.options
+        },
+
+        saveResource() {
+            this.$axios.put(this.resource + '/' + this.activeItem, this.activeItem).then((res) => {
+            })
         }
+
+
 
     },
 

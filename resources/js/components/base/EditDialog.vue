@@ -21,7 +21,7 @@
                     >
                         <v-text-field
                             label="Релевантость"
-                            v-model="activeItem.relevance"
+                            v-model="activeItem.priority"
                         ></v-text-field>
                     </v-col>
                 </v-row>
@@ -39,7 +39,7 @@
             <v-btn
                 color="blue darken-1"
                 text
-                @click="dialog = false"
+                @click="save"
             >
                 Save
             </v-btn>
@@ -49,13 +49,17 @@
 
 <script>
 
+import loadDataMixin from "../../mixins/loadDataMixin";
+
 export default {
+    mixins: [loadDataMixin],
     data() {
         return {
             dialog: false,
             activeItem: {
                 title: '',
-                relevance: '',
+                priority: '',
+                id: ''
             }
         }
     },
@@ -64,12 +68,23 @@ export default {
             type: Object,
             required: false,
         },
+        resource: {
+            type: String,
+            required: true,
+        }
 
+    },
+    methods: {
+        async save() {
+            this.saveResource()
+            this.$emit('updated')
+
+        }
     },
 
     created() {
         if(!this.item) return
         this.activeItem = Object.assign({}, this.item)
-    }
+    },
 }
 </script>

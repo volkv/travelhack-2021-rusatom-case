@@ -13,7 +13,7 @@
             ></v-progress-linear>
         </template>
 
-        <div class="ml-auto" style="position: absolute; z-index: 5; top:8px; right: 8px;" v-if="item.relevance">
+        <div class="ml-auto" style="position: absolute; z-index: 5; top:8px; right: 8px;" v-if="item.relevance && resource">
             <v-btn
                 class="mx-2"
                 fab
@@ -74,13 +74,17 @@
 
         </v-card-text>
 
+<!--        Окно правки карточки-->
         <v-dialog
+            v-if="resource"
             v-model="dialog"
             persistent
             max-width="600px"
         >
             <form-dialog
+                :resource="resource"
                 :item="item"
+                @updated="updated"
                 @close="dialog = false" />
         </v-dialog>
     </v-card>
@@ -88,7 +92,7 @@
 
 <script>
 
-import FormDialog from './FormDialog'
+import FormDialog from './EditDialog'
 
 export default {
     components: {
@@ -106,6 +110,10 @@ export default {
             type: Object,
             required: true,
         },
+        resource: {
+            type: String,
+            required: false,
+        }
     },
 
     methods: {
@@ -115,6 +123,10 @@ export default {
             }
             return Math.round(dist)
         },
+        updated() {
+            this.dialog = false
+            this.$emit('updated')
+        }
     },
 
     created() {

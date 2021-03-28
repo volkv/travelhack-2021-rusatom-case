@@ -53,9 +53,12 @@ export default {
                     resolve(this.options.userLocation = this.userLocation)
                 }
                 if (navigator.geolocation) {
-                    // let value = '55.71567700,37.55216600'
-                    // this.userLocation = value
-                    // resolve(value)
+
+                    let value = '68.956730,33.070440'
+                    this.userLocation = value
+                    resolve(value)
+                    return
+
                     navigator.geolocation.getCurrentPosition(async (res) => {
                         let value = res.coords.latitude + ',' + res.coords.longitude
                         this.userLocation = value
@@ -92,6 +95,9 @@ export default {
 
         saveResource() {
             this.$axios.put(this.resource + '/' + this.activeItem, this.activeItem).then((res) => {
+                this.$toasted.show('Обновлено', {
+                    duration : 3000
+                })
             })
         }
 

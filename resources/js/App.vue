@@ -23,10 +23,12 @@
 </template>
 
 <script>
+
+import NavMenu from './components/base/NavMenu'
 export default {
     data: () => ({ drawer: null }),
     components: {
-        'nav-menu': () => import('./components/base/NavMenu'),
+        NavMenu
     },
 }
 </script>

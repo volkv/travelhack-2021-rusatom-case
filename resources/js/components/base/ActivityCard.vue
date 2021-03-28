@@ -120,6 +120,8 @@ export default {
         prepareDistance(dist) {
             if (dist > 100) {
                 return '~' + Math.round(dist/100)*100
+            } else if (dist < 10) {
+                return Number(dist).toFixed(2)
             }
             return Math.round(dist)
         },

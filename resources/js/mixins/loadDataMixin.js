@@ -79,7 +79,6 @@ export default {
                 })
             }
 
-            console.log(this.disnanceSwitch)
             if (this.disnanceSwitch) {
                 this.options.locationRadius = this.localRadius
                 await this.getLocation().then(res => {

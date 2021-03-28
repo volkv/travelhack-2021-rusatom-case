@@ -75,21 +75,6 @@
                 <activity-card @updated="loadResource" :resource="'places'" :item="item" />
             </v-col>
         </v-row>
-
-        <v-btn
-            class="mx-2"
-            fab
-            dark
-            color="tranparent"
-            @click="dialog = true"
-            fixed
-            bottom
-            right
-        >
-            <v-icon dark>
-                mdi-plus
-            </v-icon>
-        </v-btn>
     </v-container>
 </template>
 <script>

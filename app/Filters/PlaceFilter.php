@@ -2,6 +2,7 @@
 
 namespace App\Filters;
 
+use App\Models\Place;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,8 +52,12 @@ class PlaceFilter extends AbstractFilter
     }
 
 
-    static function getSQLDistance($locationString): ?string
+    static function getSQLDistance(): ?string
     {
+        if (!$locationString = \request()->userLocation) {
+            return null;
+        }
+
         $coords = explode(',', $locationString);
 
         if (count($coords) != 2) {
@@ -70,29 +75,41 @@ class PlaceFilter extends AbstractFilter
    sin(radians(latitude )))";
     }
 
-    protected function sort($value): Builder
+
+    /**
+     * @param $value
+     * @return Builder
+     */
+    protected function locationRadius($value): Builder
     {
 
-        if (\request()->userLocation) {
-            if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
-                $this->query->select([
-                    '*', DB::raw("($sqlDistance) AS distance")
-                ]);
-
-                if ($value == 'distance') {
-
-                    return $this->query->orderBy('distance');
-                }
-            }
-
-
+        if ($sqlDistance = self::getSQLDistance()) {
+            return $this->query->addSelect([
+                 DB::raw("($sqlDistance) AS distance")
+            ])->where(DB::raw($sqlDistance), '<', $value);
         }
+
+        return $this->query;
+    }
+
+    protected function sort($value): Builder
+    {
+        if ($sqlDistance = self::getSQLDistance()) {
+            $this->query->select([
+                '*', DB::raw("($sqlDistance) AS distance")
+            ]);
+
+            if ($value == 'distance') {
+
+                return $this->query->orderBy('distance');
+            }
+        }
+
         if ($value == 'avg') {
-            return $this->query->withCount([
-                'rating as average_rating' => function ($query) {
-                    $query->select(DB::raw('coalesce(avg(value),0)'));
-                }
-            ])->orderByDesc('average_rating');
+            return $this->query->select('places.*')->leftJoin('ratings', 'places.id', '=', 'ratings.rateable_id')
+                ->addSelect(DB::raw('coalesce(AVG(ratings.value),0) as average_rating'))
+                ->groupBy('places.id')
+                ->orderByDesc('average_rating');
         }
 
         if ($value == 'relevance') {
@@ -103,25 +120,6 @@ class PlaceFilter extends AbstractFilter
             return $this->query->orderByDesc('created_at');
         }
 
-
-
-
-        return $this->query;
-    }
-
-    /**
-     * @param $value
-     * @return Builder
-     */
-    protected function locationRadius($value): Builder
-    {
-        if (\request()->userLocation) {
-            if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
-                return $this->query->select([
-                    '*', DB::raw("($sqlDistance) AS distance")
-                ])->where(DB::raw($sqlDistance), '<', $value);
-            }
-        }
         return $this->query;
     }
 
@@ -131,7 +129,7 @@ class PlaceFilter extends AbstractFilter
      */
     protected function search($value): Builder
     {
-        if(\request()->search){
+        if (\request()->search) {
             return $this->query->where('title', 'LIKE', '%'.$value.'%');
         }
         return $this->query;

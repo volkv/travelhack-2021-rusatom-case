@@ -72,6 +72,8 @@
                 <v-chip>{{item.label}}</v-chip>
             </v-chip-group>
 
+            <span class="text--grey text-caption" v-if="item.relevance">{{ item.relevance }}</span>
+
         </v-card-text>
 
 <!--        Окно правки карточки-->

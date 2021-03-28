@@ -53,7 +53,7 @@ class PlaceController extends Controller
 
     public function update(Request $request) {
         $request->validate([
-                'priority' => 'required',
+                'priority' => 'nullable|int',
                 'title' => 'required',
                 'id' => 'required',
             ]);

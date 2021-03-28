@@ -4,6 +4,7 @@ namespace App\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class EventFilter
@@ -26,6 +27,7 @@ class EventFilter extends AbstractFilter
         'accessible_environment',
         'age_restriction_id',
         'season_id',
+        'sort',
     ];
 
     /**
@@ -46,9 +48,24 @@ class EventFilter extends AbstractFilter
             'accessible_environment' => 'nullable',
             'age_restriction_id' => 'integer',
             'season_id' => 'integer',
+            'sort' => 'string',
         ]);
 
         parent::__construct($request);
+    }
+
+    protected function sort($value): Builder
+    {
+
+        if ($value == 'relevance') {
+            return $this->query->orderByDesc('relevance');
+        }
+
+        if ($value == 'created_at') {
+            return $this->query->orderByDesc('created_at');
+        }
+
+        return $this->query;
     }
 
     /**

@@ -29,8 +29,8 @@ class ContentRelevantService
     private string $token;
 
     public const RELEVANT_MODELS = [
-        Place::class,
         Event::class,
+        Place::class,
     ];
 
     /**
@@ -76,8 +76,10 @@ class ContentRelevantService
     public function updateGoogleTrends()
     {
 
-        Event::where('id','>',40)->delete();
-        Place::where('id','>',400)->delete();
+
+        Place::withTrashed()->whereNotNull('deleted_at')->forceDelete();
+        Place::where('status','!=','active')->delete();
+        Place::withTrashed()->whereNotNull('deleted_at')->forceDelete();
 
 
         foreach (self::RELEVANT_MODELS as $model_class) {
@@ -100,14 +102,15 @@ class ContentRelevantService
             $model_instances->each(function ($item) use ($model_class, $max_trends) {
                 echo '|';
                 if ($item->priority != null) {
-                    $item->relevance = $item->priority;
+                    $item->relevance = $item->priority > 100 ? 100 : $item->priority;
                     $item->save();
                 } else {
                     $google_trends_handler = new GoogleTrendsHandler($item->google_trends, $max_trends);
                     $created_at_handler = new CreatedAtHandler($item->created_at);
                     $rating_handler = new RatingHandler($item);
                     $google_trends_handler->setNext($created_at_handler)->setNext($rating_handler);
-                    $item->relevance = app(ContentRelevantService::class)->countRelevanceWithChain($google_trends_handler, 0, $model_class);
+                    $rel = app(ContentRelevantService::class)->countRelevanceWithChain($google_trends_handler, 0, $model_class);
+                    $item->relevance =  $rel > 100 ? 100 : $rel;
                     $item->save();
                 }
             });

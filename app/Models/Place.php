@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 use Laravelista\Comments\Commentable;
 
 /**
@@ -21,11 +22,14 @@ class Place extends AbstractModel implements hasGoogleTrends
     use Favoritable;
     use Rateable;
     use SoftDeletes;
-
+    
     /**
      * @var string[]
      */
     protected $guarded = [];
+
+    protected $fillable = ['title','priority'];
+
 
     /**
      * @var string[]

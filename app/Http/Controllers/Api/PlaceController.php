@@ -53,7 +53,8 @@ class PlaceController extends Controller
 
     public function update(Request $request) {
         $request->validate([
-                'priority' => 'required|integer',
+                'priority' => 'required',
+                'title' => 'required',
                 'id' => 'required',
             ]);
         $model = Place::find($request->id);
@@ -61,6 +62,11 @@ class PlaceController extends Controller
             'title',
             'priority',
         ]));
+
+        if ($model->priority) {
+            $model->relevance = $model->priority;
+        }
+
         $model->save();
         return response()->json(['status' => 'success', 'model' => $model]);
     }

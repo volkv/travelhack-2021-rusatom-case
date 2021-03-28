@@ -63,13 +63,28 @@ class PlaceFilter extends AbstractFilter
         return "6371 *
    acos(cos(radians($lat)) *
    cos(radians(latitude)) *
-   cos(radians(longitude) -   radians($long)) +
+   cos(radians(longitude) - radians($long)) +
    sin(radians($lat)) *
    sin(radians(latitude )))";
     }
 
     protected function sort($value): Builder
     {
+
+        if (\request()->userLocation) {
+            if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
+                $this->query->select([
+                    '*', DB::raw("($sqlDistance) AS distance")
+                ]);
+
+                if ($value == 'distance') {
+
+                    return $this->query->orderBy('distance');
+                }
+            }
+
+
+        }
         if ($value == 'avg') {
             return $this->query->withCount([
                 'rating as average_rating' => function ($query) {
@@ -86,17 +101,8 @@ class PlaceFilter extends AbstractFilter
             return $this->query->orderByDesc('created_at');
         }
 
-        if ($value == 'distance' && \request()->userLocation) {
 
-            if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
 
-                $this->query->select([
-                    '*', DB::raw("($sqlDistance) AS distance")
-                ]);
-
-                return $this->query->orderBy('distance');
-            }
-        }
 
         return $this->query;
     }
@@ -107,9 +113,11 @@ class PlaceFilter extends AbstractFilter
      */
     protected function locationRadius($value): Builder
     {
-        if(\request()->userLocation){
+        if (\request()->userLocation) {
             if ($sqlDistance = self::getSQLDistance(\request()->userLocation)) {
-             return $this->query->where(DB::raw($sqlDistance), '<', $value);
+                return $this->query->select([
+                    '*', DB::raw("($sqlDistance) AS distance")
+                ])->where(DB::raw($sqlDistance), '<', $value);
             }
         }
         return $this->query;
